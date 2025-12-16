@@ -3,28 +3,41 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Möbelbutik - Komplett</title>
+    <title>Möbelbutik - Komplett Version</title>
+
     <script src="https://unpkg.com/lucide@latest"></script>
+
     <style>
-      /* --- CSS --- */
+      /* --- GRUNDLÄGGANDE STIL --- */
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
       }
+
+      /* Flexbox på body för att tvinga footern till botten */
       body {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
           sans-serif;
         line-height: 1.6;
         color: #333;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
       }
       .container {
         max-width: 1200px;
         margin: 0 auto;
         padding: 0 20px;
+        width: 100%;
       }
 
-      /* Hjälpklasser */
+      /* Gör att huvudmålet tar upp allt ledigt utrymme */
+      main {
+        flex: 1;
+      }
+
+      /* --- HJÄLPKLASSER --- */
       .flex-between {
         display: flex;
         justify-content: space-between;
@@ -51,6 +64,7 @@
         margin-bottom: 15px;
       }
 
+      /* --- HEADER --- */
       header {
         background: white;
         border-bottom: 1px solid #e5e5e5;
@@ -74,8 +88,6 @@
         left: 50%;
         transform: translateX(-50%);
       }
-
-      /* NAVIGATION */
       .nav-menu {
         display: flex;
         gap: 20px;
@@ -86,19 +98,12 @@
         cursor: pointer;
         font-size: 15px;
         color: #666;
-        transition: color 0.2s;
         padding: 5px 0;
       }
-      .nav-menu button:hover {
-        color: #000;
-      }
-
-      /* AKTIV LÄNK CSS */
       .nav-menu button.active {
         color: #000;
         border-bottom: 2px solid #000;
       }
-
       .menu-toggle {
         display: none;
         background: none;
@@ -107,6 +112,7 @@
         margin-right: 15px;
       }
 
+      /* --- VARUKORGS-IKON --- */
       .cart-icon {
         position: relative;
         cursor: pointer;
@@ -131,7 +137,7 @@
         font-size: 11px;
       }
 
-      /* GRID & CARDS */
+      /* --- PRODUKT-GRID --- */
       .hero {
         background: #f9f9f9;
         padding: 40px 0;
@@ -165,7 +171,6 @@
         height: 100%;
         object-fit: cover;
       }
-
       .product-controls {
         position: absolute;
         bottom: 10px;
@@ -190,7 +195,26 @@
         cursor: pointer;
       }
 
-      /* MODAL */
+      /* --- FOOTER --- */
+      footer {
+        background: #fff;
+        border-top: 1px solid #e5e5e5;
+        padding: 40px 0;
+        margin-top: 60px;
+        text-align: center;
+      }
+      .footer-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+      .copyright {
+        font-size: 14px;
+        color: #888;
+      }
+
+      /* --- MODAL (POPUP) --- */
       .modal {
         position: fixed;
         inset: 0;
@@ -223,7 +247,7 @@
         cursor: pointer;
       }
 
-      /* PRODUKTSIDA I MODAL */
+      /* Produktdetaljer */
       .product-detail-layout {
         display: flex;
         gap: 30px;
@@ -239,7 +263,7 @@
         flex: 1;
       }
 
-      /* VARUKORG I MODAL */
+      /* Varukorgs-rader */
       .cart-item {
         display: flex;
         gap: 15px;
@@ -252,6 +276,12 @@
         height: 60px;
         object-fit: cover;
         border-radius: 4px;
+      }
+      .cart-item-info {
+        flex: 1;
+      }
+      .cart-item-right {
+        text-align: right;
       }
       .qty-btn-small {
         width: 26px;
@@ -282,15 +312,8 @@
         font-weight: bold;
         border-radius: 4px;
       }
-      .btn-link {
-        background: none;
-        border: none;
-        cursor: pointer;
-        text-decoration: underline;
-        font-size: 13px;
-      }
 
-      /* RESPONSIVITET */
+      /* --- MOBILANPASSNING --- */
       @media (max-width: 768px) {
         .menu-toggle {
           display: block;
@@ -306,7 +329,6 @@
           padding: 20px;
           border-bottom: 1px solid #e5e5e5;
           gap: 15px;
-          z-index: 99;
         }
         .nav-menu.open {
           display: flex;
@@ -339,7 +361,7 @@
               class="nav-link"
               data-page="about"
               data-action="alert"
-              data-msg="Om Oss"
+              data-msg="Välkommen till vår historia!"
             >
               Om Oss
             </button>
@@ -347,17 +369,9 @@
               class="nav-link"
               data-page="contact"
               data-action="alert"
-              data-msg="Kontakt"
+              data-msg="Kontakta oss på info@mobler.se"
             >
               Kontakt
-            </button>
-            <button
-              class="nav-link"
-              data-page="faq"
-              data-action="alert"
-              data-msg="FAQ"
-            >
-              FAQ
             </button>
           </nav>
           <button id="logo-btn" class="logo">MÖBLER</button>
@@ -372,10 +386,19 @@
     <main class="container">
       <div class="hero">
         <h1>Vår Kollektion</h1>
-        <p>Tidlös design för alla hem.</p>
+        <p>Designmöbler för det moderna hemmet.</p>
       </div>
       <div id="product-grid" class="product-grid"></div>
     </main>
+
+    <footer>
+      <div class="container footer-content">
+        <div class="text-bold" style="letter-spacing: 2px">MÖBLER</div>
+        <div class="copyright">
+          &copy; 2025 Adli, Anmar & Bleart. Alla rättigheter förbehållna.
+        </div>
+      </div>
+    </footer>
 
     <div id="app-modal" class="modal hidden">
       <div class="modal-content">
@@ -387,6 +410,16 @@
     </div>
 
     <script>
+      /**
+       * @typedef {Object} Product
+       * @property {number} id - Unikt ID för produkten
+       * @property {string} name - Produktens namn
+       * @property {number} price - Pris i SEK
+       * @property {string} image - URL till bild från Unsplash
+       * @property {string} desc - Kort beskrivning
+       */
+
+      /** @type {Product[]} */
       const products = [
         {
           id: 1,
@@ -454,6 +487,7 @@
         },
       ];
 
+      /** Huvudobjekt för appens logik */
       const app = {
         cart: [],
         currentPage: "home",
@@ -465,6 +499,7 @@
           this.updateUI();
         },
 
+        /** Sparar referenser till HTML-element för snabbare åtkomst */
         cacheElements: function () {
           this.elements = {
             grid: document.querySelector("#product-grid"),
@@ -479,37 +514,26 @@
           };
         },
 
+        /** Hanterar alla händelser (klick) på sidan */
         bindEvents: function () {
-          this.elements.menuBtn.addEventListener("click", () => {
-            this.elements.nav.classList.toggle("open");
-          });
-
+          this.elements.menuBtn.addEventListener("click", () =>
+            this.elements.nav.classList.toggle("open")
+          );
           this.elements.closeBtn.addEventListener("click", () =>
             this.closeModal()
           );
           this.elements.cartBtn.addEventListener("click", () =>
             this.openCart()
           );
-          this.elements.logo.addEventListener("click", () => {
-            this.currentPage = "home";
-            this.updateUI();
-            location.reload();
-          });
+          this.elements.logo.addEventListener("click", () => location.reload());
 
           this.elements.nav.addEventListener("click", (e) => {
             const btn = e.target.closest("button");
             if (!btn) return;
-
-            const page = btn.dataset.page;
-            const action = btn.dataset.action;
-
-            if (action === "alert") {
-              alert(`Demo: ${btn.dataset.msg}`);
-            }
-
-            if (page) {
-              this.currentPage = page;
-              this.elements.nav.classList.remove("open"); // Stäng mobileny efter klick
+            if (btn.dataset.action === "alert") alert(btn.dataset.msg);
+            if (btn.dataset.page) {
+              this.currentPage = btn.dataset.page;
+              this.elements.nav.classList.remove("open");
               this.updateUI();
             }
           });
@@ -543,31 +567,35 @@
           });
         },
 
+        /**
+         * Uppdaterar mängden av en produkt i varukorgen
+         * @param {number} id - Produkt-ID
+         * @param {number} change - Ändring (+1 eller -1)
+         */
         updateQty: function (id, change) {
           const item = this.cart.find((x) => x.id === id);
           if (item) {
             item.qty += change;
             if (item.qty <= 0) this.cart = this.cart.filter((x) => x.id !== id);
           } else if (change > 0) {
-            this.cart.push({ ...products.find((p) => p.id === id), qty: 1 });
+            const product = products.find((p) => p.id === id);
+            this.cart.push({ ...product, qty: 1 });
           }
           this.updateUI();
         },
 
+        /** Uppdaterar hela gränssnittet baserat på aktuell data */
         updateUI: function () {
-          // Uppdatera Aktiv Länk i Nav
-          document.querySelectorAll(".nav-link").forEach((link) => {
-            link.classList.toggle(
-              "active",
-              link.dataset.page === this.currentPage
+          document
+            .querySelectorAll(".nav-link")
+            .forEach((l) =>
+              l.classList.toggle("active", l.dataset.page === this.currentPage)
             );
-          });
+          this.elements.badge.innerText = this.cart.reduce(
+            (s, i) => s + i.qty,
+            0
+          );
 
-          // Badge
-          const count = this.cart.reduce((s, i) => s + i.qty, 0);
-          this.elements.badge.innerText = count;
-
-          // Grid
           this.elements.grid.innerHTML = products
             .map((p) => {
               const inCart = this.cart.find((item) => item.id === p.id);
@@ -578,10 +606,7 @@
                             <div class="product-controls">
                                 ${
                                   inCart
-                                    ? `
-                                    <button class="action-btn" data-id="${p.id}" data-change="-1"><i data-lucide="minus" style="width:16px;"></i></button>
-                                    <span class="text-bold" style="padding:0 8px;">${inCart.qty}</span>
-                                `
+                                    ? `<button class="action-btn" data-id="${p.id}" data-change="-1"><i data-lucide="minus" style="width:16px;"></i></button><span class="text-bold" style="padding:0 8px;">${inCart.qty}</span>`
                                     : ""
                                 }
                                 <button class="action-btn" data-id="${
@@ -601,9 +626,12 @@
           ) {
             this.openCart();
           }
+
+          // EXTERN KÄLLA: Lucide ritar ikonerna
           lucide.createIcons();
         },
 
+        /** Öppnar produktvisning i modalen */
         openProduct: function (id) {
           const p = products.find((x) => x.id === id);
           this.elements.modalBody.innerHTML = `
@@ -620,6 +648,7 @@
           lucide.createIcons();
         },
 
+        /** Öppnar varukorgen i modalen */
         openCart: function () {
           if (this.cart.length === 0) {
             this.elements.modalBody.innerHTML =
@@ -631,7 +660,7 @@
                 (i) => `
                     <div class="cart-item">
                         <img src="${i.image}">
-                        <div style="flex:1">
+                        <div class="cart-item-info">
                             <b class="text-bold">${i.name}</b><br>${i.price} kr
                             <div class="flex-gap-10 mt-10">
                                 <button class="qty-btn-small" data-id="${
@@ -643,11 +672,13 @@
                                 }" data-change="1">+</button>
                             </div>
                         </div>
-                        <div style="text-align:right">
+                        <div class="cart-item-right">
                             <div class="text-bold">${i.price * i.qty} kr</div>
-                            <button class="btn-link text-red mt-10" data-id="${
+                            <button class="btn-link-red mt-10" data-id="${
                               i.id
-                            }" data-change="-${i.qty}">Ta bort</button>
+                            }" data-change="-${
+                  i.qty
+                }" style="background:none; border:none; color:red; cursor:pointer; text-decoration:underline; font-size:12px;">Ta bort</button>
                         </div>
                     </div>`
               )
@@ -657,14 +688,16 @@
                     <div id="cart-view">
                         <div class="flex-between mb-15">
                             <h3>Din Varukorg</h3>
-                            <button id="clear-cart" class="btn-link text-red">Rensa allt</button>
+                            <button id="clear-cart" class="text-red" style="background:none; border:none; cursor:pointer; text-decoration:underline; font-size:13px;">Rensa allt</button>
                         </div>
                         ${itemsHtml}
                         <div class="summary">
                             <div class="flex-between"><span>Delsumma</span><span>${subtotal} kr</span></div>
-                            <div class="flex-between text-bold mt-10"><span>Total</span><span>${
-                              subtotal + 150
-                            } kr</span></div>
+                            <div class="flex-between text-bold mt-10" style="border-top:1px solid #ddd; padding-top:10px;">
+                                <span>Total (inkl. frakt)</span><span>${
+                                  subtotal + 150
+                                } kr</span>
+                            </div>
                             <button class="checkout-btn">SLUTFÖR KÖP</button>
                         </div>
                     </div>`;
