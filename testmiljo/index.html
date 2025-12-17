@@ -1,717 +1,674 @@
 <!DOCTYPE html>
 <html lang="sv">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Möbelbutik - Komplett Version</title>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Möbelbutik - Komplett Funktionell Version</title>
 
-    <script src="https://unpkg.com/lucide@latest"></script>
+        <script src="https://unpkg.com/lucide@latest"></script>
 
-    <style>
-      /* --- GRUNDLÄGGANDE STIL --- */
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
+        <style>
+            /* --- DESIGN & LAYOUT --- */
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                    Roboto, sans-serif;
+                line-height: 1.6;
+                color: #333;
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh;
+            }
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 0 20px;
+                width: 100%;
+            }
+            main {
+                flex: 1;
+            }
 
-      /* Flexbox på body för att tvinga footern till botten */
-      body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          sans-serif;
-        line-height: 1.6;
-        color: #333;
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-      }
-      .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px;
-        width: 100%;
-      }
+            /* HEADER */
+            header {
+                background: white;
+                border-bottom: 1px solid #e5e5e5;
+                position: sticky;
+                top: 0;
+                z-index: 100;
+            }
+            .header-content {
+                display: flex;
+                align-items: center;
+                height: 100px;
+                position: relative;
+            }
 
-      /* Gör att huvudmålet tar upp allt ledigt utrymme */
-      main {
-        flex: 1;
-      }
+            .logo-link {
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+                display: flex;
+                align-items: center;
+                text-decoration: none;
+            }
+            .logo-img {
+                height: 80px;
+                width: auto;
+                object-fit: contain;
+            }
 
-      /* --- HJÄLPKLASSER --- */
-      .flex-between {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-      .flex-gap-10 {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-      .text-bold {
-        font-weight: 600;
-      }
-      .text-muted {
-        color: #666;
-      }
-      .text-red {
-        color: #dc2626;
-      }
-      .mt-10 {
-        margin-top: 10px;
-      }
-      .mb-15 {
-        margin-bottom: 15px;
-      }
+            .nav-menu {
+                display: flex;
+                gap: 20px;
+            }
+            .nav-menu button {
+                background: none;
+                border: none;
+                cursor: pointer;
+                font-size: 15px;
+                color: #666;
+            }
+            .menu-toggle {
+                display: none;
+                background: none;
+                border: none;
+                cursor: pointer;
+                margin-right: 15px;
+            }
 
-      /* --- HEADER --- */
-      header {
-        background: white;
-        border-bottom: 1px solid #e5e5e5;
-        position: sticky;
-        top: 0;
-        z-index: 100;
-      }
-      .header-content {
-        display: flex;
-        align-items: center;
-        height: 64px;
-        position: relative;
-      }
-      .logo {
-        font-size: 20px;
-        font-weight: 600;
-        cursor: pointer;
-        background: none;
-        border: none;
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-      }
-      .nav-menu {
-        display: flex;
-        gap: 20px;
-      }
-      .nav-menu button {
-        background: none;
-        border: none;
-        cursor: pointer;
-        font-size: 15px;
-        color: #666;
-        padding: 5px 0;
-      }
-      .nav-menu button.active {
-        color: #000;
-        border-bottom: 2px solid #000;
-      }
-      .menu-toggle {
-        display: none;
-        background: none;
-        border: none;
-        cursor: pointer;
-        margin-right: 15px;
-      }
+            .cart-icon {
+                position: relative;
+                cursor: pointer;
+                background: none;
+                border: none;
+                margin-left: auto;
+                display: flex;
+                align-items: center;
+            }
+            .cart-badge {
+                position: absolute;
+                top: -8px;
+                right: -8px;
+                background: black;
+                color: white;
+                border-radius: 50%;
+                width: 18px;
+                height: 18px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 11px;
+            }
 
-      /* --- VARUKORGS-IKON --- */
-      .cart-icon {
-        position: relative;
-        cursor: pointer;
-        background: none;
-        border: none;
-        margin-left: auto;
-        display: flex;
-        align-items: center;
-      }
-      .cart-badge {
-        position: absolute;
-        top: -8px;
-        right: -8px;
-        background: black;
-        color: white;
-        border-radius: 50%;
-        width: 18px;
-        height: 18px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 11px;
-      }
+            /* PRODUKT-GRID */
+            .hero {
+                background: #f9f9f9;
+                padding: 40px 0;
+                text-align: center;
+                margin-bottom: 30px;
+            }
+            .product-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 30px;
+                margin-bottom: 50px;
+            }
+            .product-card {
+                cursor: pointer;
+                transition: transform 0.2s;
+                border-radius: 4px;
+                overflow: hidden;
+            }
+            .product-card:hover {
+                transform: translateY(-5px);
+            }
+            .product-image {
+                width: 100%;
+                aspect-ratio: 1;
+                background: #f5f5f5;
+                position: relative;
+            }
+            .product-image img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+            .product-controls {
+                position: absolute;
+                bottom: 10px;
+                right: 10px;
+                display: flex;
+                align-items: center;
+                background: white;
+                border-radius: 20px;
+                padding: 4px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+                z-index: 10;
+            }
+            .action-btn {
+                background: white;
+                border: none;
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+            }
 
-      /* --- PRODUKT-GRID --- */
-      .hero {
-        background: #f9f9f9;
-        padding: 40px 0;
-        text-align: center;
-        margin-bottom: 30px;
-      }
-      .product-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 30px;
-        margin-bottom: 50px;
-      }
-      .product-card {
-        cursor: pointer;
-        transition: transform 0.2s;
-      }
-      .product-card:hover {
-        transform: translateY(-5px);
-      }
-      .product-image {
-        width: 100%;
-        aspect-ratio: 1;
-        background: #f5f5f5;
-        position: relative;
-        overflow: hidden;
-        margin-bottom: 10px;
-        border-radius: 4px;
-      }
-      .product-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-      .product-controls {
-        position: absolute;
-        bottom: 10px;
-        right: 10px;
-        display: flex;
-        align-items: center;
-        background: white;
-        border-radius: 20px;
-        padding: 4px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-        z-index: 10;
-      }
-      .action-btn {
-        background: white;
-        border: none;
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-      }
+            /* MODAL & VARUKORG */
+            .modal {
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.5);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 1000;
+                padding: 20px;
+            }
+            .modal.hidden {
+                display: none;
+            }
+            .modal-content {
+                background: white;
+                width: 100%;
+                max-width: 700px;
+                max-height: 85vh;
+                overflow-y: auto;
+                position: relative;
+                padding: 40px;
+                border-radius: 8px;
+            }
+            .modal-close {
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                background: none;
+                border: none;
+                cursor: pointer;
+            }
 
-      /* --- FOOTER --- */
-      footer {
-        background: #fff;
-        border-top: 1px solid #e5e5e5;
-        padding: 40px 0;
-        margin-top: 60px;
-        text-align: center;
-      }
-      .footer-content {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-      }
-      .copyright {
-        font-size: 14px;
-        color: #888;
-      }
+            .cart-item {
+                display: flex;
+                gap: 15px;
+                padding: 20px 0;
+                border-bottom: 1px solid #eee;
+                align-items: center;
+            }
+            .cart-item img {
+                width: 80px;
+                height: 80px;
+                object-fit: cover;
+                border-radius: 4px;
+            }
+            .cart-item-info {
+                flex: 1;
+            }
+            .qty-btn-small {
+                width: 28px;
+                height: 28px;
+                border: 1px solid #ddd;
+                background: white;
+                cursor: pointer;
+                border-radius: 4px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
 
-      /* --- MODAL (POPUP) --- */
-      .modal {
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.5);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1000;
-        padding: 20px;
-      }
-      .modal.hidden {
-        display: none;
-      }
-      .modal-content {
-        background: white;
-        width: 100%;
-        max-width: 700px;
-        max-height: 85vh;
-        overflow-y: auto;
-        position: relative;
-        padding: 40px;
-        border-radius: 8px;
-      }
-      .modal-close {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        background: none;
-        border: none;
-        cursor: pointer;
-      }
+            .summary {
+                background: #f9f9f9;
+                padding: 25px;
+                margin-top: 25px;
+                border-radius: 4px;
+            }
+            .summary-row {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 10px;
+            }
 
-      /* Produktdetaljer */
-      .product-detail-layout {
-        display: flex;
-        gap: 30px;
-        align-items: start;
-      }
-      .product-detail-image {
-        width: 45%;
-        max-width: 300px;
-        border-radius: 8px;
-        object-fit: cover;
-      }
-      .product-detail-info {
-        flex: 1;
-      }
+            /* KNAPPAR */
+            .checkout-btn {
+                background: black;
+                color: white;
+                border: 1px solid black;
+                width: 100%;
+                padding: 16px;
+                margin-top: 15px;
+                cursor: pointer;
+                font-weight: bold;
+                border-radius: 4px;
+                text-transform: uppercase;
+            }
+            .continue-btn {
+                background: white;
+                color: black;
+                border: 1px solid black;
+                width: 100%;
+                padding: 16px;
+                margin-top: 10px;
+                cursor: pointer;
+                font-weight: bold;
+                border-radius: 4px;
+                text-transform: uppercase;
+            }
+            .continue-btn:hover {
+                background: #f8f8f8;
+            }
+            .btn-link-red {
+                background: none;
+                border: none;
+                color: #dc2626;
+                cursor: pointer;
+                text-decoration: underline;
+                font-size: 13px;
+            }
 
-      /* Varukorgs-rader */
-      .cart-item {
-        display: flex;
-        gap: 15px;
-        padding: 15px 0;
-        border-bottom: 1px solid #eee;
-        align-items: center;
-      }
-      .cart-item img {
-        width: 60px;
-        height: 60px;
-        object-fit: cover;
-        border-radius: 4px;
-      }
-      .cart-item-info {
-        flex: 1;
-      }
-      .cart-item-right {
-        text-align: right;
-      }
-      .qty-btn-small {
-        width: 26px;
-        height: 26px;
-        border: 1px solid #ddd;
-        background: white;
-        cursor: pointer;
-        border-radius: 4px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
+            footer {
+                border-top: 1px solid #e5e5e5;
+                padding: 40px 0;
+                margin-top: 60px;
+                text-align: center;
+            }
 
-      .summary {
-        background: #f9f9f9;
-        padding: 20px;
-        margin-top: 20px;
-        border-radius: 4px;
-      }
-      .checkout-btn {
-        background: black;
-        color: white;
-        border: none;
-        width: 100%;
-        padding: 15px;
-        margin-top: 15px;
-        cursor: pointer;
-        font-weight: bold;
-        border-radius: 4px;
-      }
+            @media (max-width: 768px) {
+                .header-content {
+                    height: 80px;
+                }
+                .menu-toggle {
+                    display: block;
+                }
+                .nav-menu {
+                    display: none;
+                    flex-direction: column;
+                    position: absolute;
+                    top: 80px;
+                    left: 0;
+                    width: 100%;
+                    background: white;
+                    padding: 20px;
+                    border-bottom: 1px solid #e5e5e5;
+                    gap: 15px;
+                }
+                .nav-menu.open {
+                    display: flex;
+                }
+                .logo-link {
+                    position: static;
+                    transform: none;
+                    margin: 0 auto;
+                }
+                .logo-img {
+                    height: 50px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <div class="container">
+                <div class="header-content">
+                    <button id="menu-toggle" class="menu-toggle">
+                        <i data-lucide="menu"></i>
+                    </button>
+                    <nav id="nav-menu" class="nav-menu">
+                        <button class="nav-link">Butik</button>
+                        <button class="nav-link">Om Oss</button>
+                        <button class="nav-link">Kontakt</button>
+                    </nav>
 
-      /* --- MOBILANPASSNING --- */
-      @media (max-width: 768px) {
-        .menu-toggle {
-          display: block;
-        }
-        .nav-menu {
-          display: none;
-          flex-direction: column;
-          position: absolute;
-          top: 64px;
-          left: 0;
-          width: 100%;
-          background: white;
-          padding: 20px;
-          border-bottom: 1px solid #e5e5e5;
-          gap: 15px;
-        }
-        .nav-menu.open {
-          display: flex;
-        }
-        .logo {
-          position: static;
-          transform: none;
-          margin: 0 auto;
-        }
-        .product-detail-layout {
-          flex-direction: column;
-          align-items: center;
-        }
-        .product-detail-image {
-          width: 100%;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <header>
-      <div class="container">
-        <div class="header-content">
-          <button id="menu-toggle" class="menu-toggle">
-            <i data-lucide="menu"></i>
-          </button>
-          <nav id="nav-menu" class="nav-menu">
-            <button class="nav-link active" data-page="home">Butik</button>
-            <button
-              class="nav-link"
-              data-page="about"
-              data-action="alert"
-              data-msg="Välkommen till vår historia!"
-            >
-              Om Oss
-            </button>
-            <button
-              class="nav-link"
-              data-page="contact"
-              data-action="alert"
-              data-msg="Kontakta oss på info@mobler.se"
-            >
-              Kontakt
-            </button>
-          </nav>
-          <button id="logo-btn" class="logo">MÖBLER</button>
-          <button id="cart-btn" class="cart-icon">
-            <i data-lucide="shopping-cart"></i>
-            <span id="cart-badge" class="cart-badge">0</span>
-          </button>
+                    <a href="index.html" class="logo-link">
+                        <img
+                            src="logo.png"
+                            alt="Möbler Logotyp"
+                            class="logo-img"
+                        />
+                    </a>
+
+                    <button id="cart-btn" class="cart-icon">
+                        <i data-lucide="shopping-cart"></i>
+                        <span id="cart-badge" class="cart-badge">0</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="container">
+            <div class="hero">
+                <h1>Vår Kollektion</h1>
+                <p>Designmöbler för det moderna hemmet.</p>
+            </div>
+            <div id="product-grid" class="product-grid"></div>
+        </main>
+
+        <footer>
+            <div class="container">
+                <p><strong>MÖBLER</strong></p>
+                <p style="color: #888; font-size: 14px; margin-top: 10px">
+                    &copy; 2025 Adli, Anmar & Bleart. Alla rättigheter
+                    förbehållna.
+                </p>
+            </div>
+        </footer>
+
+        <div id="app-modal" class="modal hidden">
+            <div class="modal-content">
+                <button id="close-modal" class="modal-close">
+                    <i data-lucide="x"></i>
+                </button>
+                <div id="modal-body"></div>
+            </div>
         </div>
-      </div>
-    </header>
 
-    <main class="container">
-      <div class="hero">
-        <h1>Vår Kollektion</h1>
-        <p>Designmöbler för det moderna hemmet.</p>
-      </div>
-      <div id="product-grid" class="product-grid"></div>
-    </main>
+        <script>
+            /** * DATA & TILLSTÅND
+             */
+            const furnitureData = [
+                {
+                    id: 1,
+                    name: "Modern Stol",
+                    price: 3135,
+                    image: "https://images.unsplash.com/photo-1760716478137-d861d5b354e8?w=800",
+                    desc: "Minimalistisk stol för det moderna hemmet.",
+                },
+                {
+                    id: 2,
+                    name: "Designer Lampa",
+                    price: 1564,
+                    image: "https://images.unsplash.com/photo-1702505973200-cce1a216f92b?w=800",
+                    desc: "Skapar ett varmt och behagligt sken i rummet.",
+                },
+                {
+                    id: 3,
+                    name: "Keramisk Vas",
+                    price: 830,
+                    image: "https://images.unsplash.com/photo-1612196808214-b8e1d6145a8c?w=800",
+                    desc: "Handgjord vas med unik textur.",
+                },
+                {
+                    id: 4,
+                    name: "Soffbord i Ek",
+                    price: 5235,
+                    image: "https://images.unsplash.com/photo-1617638924751-cc232f82ecf9?w=800",
+                    desc: "Massiv ek som håller i generationer.",
+                },
+                {
+                    id: 5,
+                    name: "Väggklocka",
+                    price: 935,
+                    image: "https://images.unsplash.com/photo-1566663409293-585e129d2e71?w=800",
+                    desc: "Tyst urverk i stilren design.",
+                },
+                {
+                    id: 6,
+                    name: "Dekor-set",
+                    price: 2090,
+                    image: "https://images.unsplash.com/photo-1711564354293-30760984899e?w=800",
+                    desc: "Noggrant utvalda detaljer för bokhyllan.",
+                },
+                {
+                    id: 7,
+                    name: "Loungestol Sammet",
+                    price: 4120,
+                    image: "https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=800",
+                    desc: "Lyxig komfort i mjuk sammet.",
+                },
+                {
+                    id: 8,
+                    name: "Vägghylla Duo",
+                    price: 1250,
+                    image: "https://images.unsplash.com/photo-1594620302200-9a762244a156?w=800",
+                    desc: "Smidig förvaring med industriell touch.",
+                },
+            ];
 
-    <footer>
-      <div class="container footer-content">
-        <div class="text-bold" style="letter-spacing: 2px">MÖBLER</div>
-        <div class="copyright">
-          &copy; 2025 Adli, Anmar & Bleart. Alla rättigheter förbehållna.
-        </div>
-      </div>
-    </footer>
+            let cart = [];
 
-    <div id="app-modal" class="modal hidden">
-      <div class="modal-content">
-        <button id="close-modal" class="modal-close">
-          <i data-lucide="x"></i>
-        </button>
-        <div id="modal-body"></div>
-      </div>
-    </div>
+            /**
+             * Renderar startsidan med alla produkter.
+             */
+            function renderStore() {
+                const grid = document.getElementById("product-grid");
+                const totalCount = cart.reduce(
+                    (sum, item) => sum + item.qty,
+                    0
+                );
+                document.getElementById("cart-badge").innerText = totalCount;
 
-    <script>
-      /**
-       * @typedef {Object} Product
-       * @property {number} id - Unikt ID för produkten
-       * @property {string} name - Produktens namn
-       * @property {number} price - Pris i SEK
-       * @property {string} image - URL till bild från Unsplash
-       * @property {string} desc - Kort beskrivning
-       */
+                grid.innerHTML = furnitureData
+                    .map(product => {
+                        const cartItem = cart.find(
+                            item => item.id === product.id
+                        );
+                        const qty = cartItem ? cartItem.qty : 0;
 
-      /** @type {Product[]} */
-      const products = [
-        {
-          id: 1,
-          name: "Modern Stol",
-          price: 3135,
-          image:
-            "https://images.unsplash.com/photo-1760716478137-d861d5b354e8?w=800",
-          desc: "En minimalistisk stol med hög komfort.",
-        },
-        {
-          id: 2,
-          name: "Designer Lampa",
-          price: 1564,
-          image:
-            "https://images.unsplash.com/photo-1702505973200-cce1a216f92b?w=800",
-          desc: "Skapar ett varmt och behagligt sken.",
-        },
-        {
-          id: 3,
-          name: "Keramisk Vas",
-          price: 830,
-          image:
-            "https://images.unsplash.com/photo-1612196808214-b8e1d6145a8c?w=800",
-          desc: "Handgjord vas för dina favoritblommor.",
-        },
-        {
-          id: 4,
-          name: "Soffbord i Ek",
-          price: 5235,
-          image:
-            "https://images.unsplash.com/photo-1617638924751-cc232f82ecf9?w=800",
-          desc: "Massiv ek för en naturlig känsla.",
-        },
-        {
-          id: 5,
-          name: "Väggklocka",
-          price: 935,
-          image:
-            "https://images.unsplash.com/photo-1566663409293-585e129d2e71?w=800",
-          desc: "Tidlös design för alla rum.",
-        },
-        {
-          id: 6,
-          name: "Dekor-set",
-          price: 2090,
-          image:
-            "https://images.unsplash.com/photo-1711564354293-30760984899e?w=800",
-          desc: "Ett kurerat set för inredningsentusiasten.",
-        },
-        {
-          id: 7,
-          name: "Loungestol Sammet",
-          price: 4120,
-          image:
-            "https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=800",
-          desc: "Lyxig stol i mjuk grön sammet.",
-        },
-        {
-          id: 8,
-          name: "Vägghylla Duo",
-          price: 1250,
-          image:
-            "https://images.unsplash.com/photo-1594620302200-9a762244a156?w=800",
-          desc: "Smidig förvaring i svart metall.",
-        },
-      ];
-
-      /** Huvudobjekt för appens logik */
-      const app = {
-        cart: [],
-        currentPage: "home",
-        elements: {},
-
-        init: function () {
-          this.cacheElements();
-          this.bindEvents();
-          this.updateUI();
-        },
-
-        /** Sparar referenser till HTML-element för snabbare åtkomst */
-        cacheElements: function () {
-          this.elements = {
-            grid: document.querySelector("#product-grid"),
-            badge: document.querySelector("#cart-badge"),
-            modal: document.querySelector("#app-modal"),
-            modalBody: document.querySelector("#modal-body"),
-            nav: document.querySelector("#nav-menu"),
-            menuBtn: document.querySelector("#menu-toggle"),
-            closeBtn: document.querySelector("#close-modal"),
-            cartBtn: document.querySelector("#cart-btn"),
-            logo: document.querySelector("#logo-btn"),
-          };
-        },
-
-        /** Hanterar alla händelser (klick) på sidan */
-        bindEvents: function () {
-          this.elements.menuBtn.addEventListener("click", () =>
-            this.elements.nav.classList.toggle("open")
-          );
-          this.elements.closeBtn.addEventListener("click", () =>
-            this.closeModal()
-          );
-          this.elements.cartBtn.addEventListener("click", () =>
-            this.openCart()
-          );
-          this.elements.logo.addEventListener("click", () => location.reload());
-
-          this.elements.nav.addEventListener("click", (e) => {
-            const btn = e.target.closest("button");
-            if (!btn) return;
-            if (btn.dataset.action === "alert") alert(btn.dataset.msg);
-            if (btn.dataset.page) {
-              this.currentPage = btn.dataset.page;
-              this.elements.nav.classList.remove("open");
-              this.updateUI();
-            }
-          });
-
-          this.elements.grid.addEventListener("click", (e) => {
-            const btn = e.target.closest(".action-btn");
-            const card = e.target.closest(".product-card");
-            if (btn) {
-              e.stopPropagation();
-              this.updateQty(
-                parseInt(btn.dataset.id),
-                parseInt(btn.dataset.change)
-              );
-            } else if (card) {
-              this.openProduct(parseInt(card.dataset.id));
-            }
-          });
-
-          this.elements.modalBody.addEventListener("click", (e) => {
-            const btn = e.target.closest("button");
-            if (!btn) return;
-            if (btn.id === "clear-cart") {
-              this.cart = [];
-              this.updateUI();
-            } else if (btn.dataset.id) {
-              this.updateQty(
-                parseInt(btn.dataset.id),
-                parseInt(btn.dataset.change)
-              );
-            }
-          });
-        },
-
-        /**
-         * Uppdaterar mängden av en produkt i varukorgen
-         * @param {number} id - Produkt-ID
-         * @param {number} change - Ändring (+1 eller -1)
-         */
-        updateQty: function (id, change) {
-          const item = this.cart.find((x) => x.id === id);
-          if (item) {
-            item.qty += change;
-            if (item.qty <= 0) this.cart = this.cart.filter((x) => x.id !== id);
-          } else if (change > 0) {
-            const product = products.find((p) => p.id === id);
-            this.cart.push({ ...product, qty: 1 });
-          }
-          this.updateUI();
-        },
-
-        /** Uppdaterar hela gränssnittet baserat på aktuell data */
-        updateUI: function () {
-          document
-            .querySelectorAll(".nav-link")
-            .forEach((l) =>
-              l.classList.toggle("active", l.dataset.page === this.currentPage)
-            );
-          this.elements.badge.innerText = this.cart.reduce(
-            (s, i) => s + i.qty,
-            0
-          );
-
-          this.elements.grid.innerHTML = products
-            .map((p) => {
-              const inCart = this.cart.find((item) => item.id === p.id);
-              return `
-                    <div class="product-card" data-id="${p.id}">
-                        <div class="product-image">
-                            <img src="${p.image}">
-                            <div class="product-controls">
-                                ${
-                                  inCart
-                                    ? `<button class="action-btn" data-id="${p.id}" data-change="-1"><i data-lucide="minus" style="width:16px;"></i></button><span class="text-bold" style="padding:0 8px;">${inCart.qty}</span>`
-                                    : ""
-                                }
-                                <button class="action-btn" data-id="${
-                                  p.id
-                                }" data-change="1"><i data-lucide="plus" style="width:16px;"></i></button>
-                            </div>
-                        </div>
-                        <div class="text-bold">${p.name}</div>
-                        <div class="text-muted">${p.price} kr</div>
-                    </div>`;
-            })
-            .join("");
-
-          if (
-            !this.elements.modal.classList.contains("hidden") &&
-            document.querySelector("#cart-view")
-          ) {
-            this.openCart();
-          }
-
-          // EXTERN KÄLLA: Lucide ritar ikonerna
-          lucide.createIcons();
-        },
-
-        /** Öppnar produktvisning i modalen */
-        openProduct: function (id) {
-          const p = products.find((x) => x.id === id);
-          this.elements.modalBody.innerHTML = `
-                <div class="product-detail-layout">
-                    <img src="${p.image}" class="product-detail-image">
-                    <div class="product-detail-info">
-                        <h2>${p.name}</h2>
-                        <p class="text-bold mt-10" style="font-size:1.4em;">${p.price} kr</p>
-                        <p class="text-muted mt-10 mb-15">${p.desc}</p>
-                        <button class="checkout-btn" data-id="${p.id}" data-change="1">LÄGG I VARUKORG</button>
+                        return `
+            <div class="product-card" data-id="${product.id}">
+                <div class="product-image">
+                    <img src="${product.image}" alt="${product.name}">
+                    <div class="product-controls">
+                        ${
+                            qty > 0
+                                ? `
+                            <button class="action-btn qty-change" data-id="${product.id}" data-change="-1"><i data-lucide="minus" style="width:16px;"></i></button>
+                            <span style="padding:0 8px; font-weight:600;">${qty}</span>
+                        `
+                                : ""
+                        }
+                        <button class="action-btn qty-change" data-id="${
+                            product.id
+                        }" data-change="1"><i data-lucide="plus" style="width:16px;"></i></button>
                     </div>
-                </div>`;
-          this.elements.modal.classList.remove("hidden");
-          lucide.createIcons();
-        },
+                </div>
+                <div style="font-weight:600; margin-top:10px;">${
+                    product.name
+                }</div>
+                <div style="color:#666;">${product.price} kr</div>
+            </div>`;
+                    })
+                    .join("");
+                lucide.createIcons();
+            }
 
-        /** Öppnar varukorgen i modalen */
-        openCart: function () {
-          if (this.cart.length === 0) {
-            this.elements.modalBody.innerHTML =
-              "<div id='cart-view' style='text-align:center; padding:40px;'>Korgen är tom.</div>";
-          } else {
-            const subtotal = this.cart.reduce((s, i) => s + i.price * i.qty, 0);
-            const itemsHtml = this.cart
-              .map(
-                (i) => `
-                    <div class="cart-item">
-                        <img src="${i.image}">
-                        <div class="cart-item-info">
-                            <b class="text-bold">${i.name}</b><br>${i.price} kr
-                            <div class="flex-gap-10 mt-10">
-                                <button class="qty-btn-small" data-id="${
-                                  i.id
-                                }" data-change="-1">-</button>
-                                <span class="text-bold">${i.qty}</span>
-                                <button class="qty-btn-small" data-id="${
-                                  i.id
-                                }" data-change="1">+</button>
-                            </div>
-                        </div>
-                        <div class="cart-item-right">
-                            <div class="text-bold">${i.price * i.qty} kr</div>
-                            <button class="btn-link-red mt-10" data-id="${
-                              i.id
-                            }" data-change="-${
-                  i.qty
-                }" style="background:none; border:none; color:red; cursor:pointer; text-decoration:underline; font-size:12px;">Ta bort</button>
-                        </div>
-                    </div>`
-              )
-              .join("");
+            /**
+             * Uppdaterar varukorgens innehåll.
+             * @param {number} productId
+             * @param {number} change
+             */
+            function updateCart(productId, change) {
+                const product = furnitureData.find(p => p.id === productId);
+                const itemIndex = cart.findIndex(item => item.id === productId);
 
-            this.elements.modalBody.innerHTML = `
-                    <div id="cart-view">
-                        <div class="flex-between mb-15">
-                            <h3>Din Varukorg</h3>
-                            <button id="clear-cart" class="text-red" style="background:none; border:none; cursor:pointer; text-decoration:underline; font-size:13px;">Rensa allt</button>
-                        </div>
-                        ${itemsHtml}
-                        <div class="summary">
-                            <div class="flex-between"><span>Delsumma</span><span>${subtotal} kr</span></div>
-                            <div class="flex-between text-bold mt-10" style="border-top:1px solid #ddd; padding-top:10px;">
-                                <span>Total (inkl. frakt)</span><span>${
-                                  subtotal + 150
-                                } kr</span>
-                            </div>
-                            <button class="checkout-btn">SLUTFÖR KÖP</button>
-                        </div>
-                    </div>`;
-          }
-          this.elements.modal.classList.remove("hidden");
-          lucide.createIcons();
-        },
+                if (itemIndex > -1) {
+                    cart[itemIndex].qty += change;
+                    if (cart[itemIndex].qty <= 0) cart.splice(itemIndex, 1);
+                } else if (change > 0) {
+                    cart.push({ ...product, qty: 1 });
+                }
+                renderStore();
+            }
 
-        closeModal: function () {
-          this.elements.modal.classList.add("hidden");
-        },
-      };
+            /**
+             * Visar information om en specifik produkt i modalen.
+             * @param {number} id
+             */
+            function showDetail(id) {
+                const p = furnitureData.find(x => x.id === id);
+                const modalBody = document.getElementById("modal-body");
+                modalBody.innerHTML = `
+        <div style="display:flex; gap:30px; flex-wrap:wrap;">
+            <img src="${p.image}" style="width:100%; max-width:300px; border-radius:8px;">
+            <div style="flex:1; min-width:250px;">
+                <h2 style="margin-bottom:10px;">${p.name}</h2>
+                <p style="font-weight:bold; font-size:1.5em; margin-bottom:15px;">${p.price} kr</p>
+                <p style="color:#666; margin-bottom:25px;">${p.desc}</p>
+                <button class="checkout-btn qty-mod" data-id="${p.id}" data-change="1">LÄGG I VARUKORG</button>
+            </div>
+        </div>`;
+                document.getElementById("app-modal").classList.remove("hidden");
+                lucide.createIcons();
+            }
 
-      app.init();
-    </script>
-  </body>
+            /**
+             * Visar varukorgen och dess sammanställning.
+             */
+            function showCart() {
+                const modalBody = document.getElementById("modal-body");
+                if (cart.length === 0) {
+                    modalBody.innerHTML = `
+            <div id="cart-view" style="text-align:center; padding:60px 20px;">
+                <h3 style="margin-bottom:15px;">Din varukorg är tom</h3>
+                <button class="continue-btn close-modal-trigger" style="max-width:250px;">BÖRJA HANDLA</button>
+            </div>`;
+                } else {
+                    const totalSum = cart.reduce(
+                        (sum, item) => sum + item.price * item.qty,
+                        0
+                    );
+                    const itemsHtml = cart
+                        .map(
+                            item => `
+            <div class="cart-item">
+                <img src="${item.image}">
+                <div class="cart-item-info">
+                    <div style="font-weight:600; font-size:1.1em;">${
+                        item.name
+                    }</div>
+                    <div style="color:#666;">${item.price} kr</div>
+                    <div style="margin-top:15px; display:flex; gap:12px; align-items:center;">
+                        <button class="qty-btn-small qty-mod" data-id="${
+                            item.id
+                        }" data-change="-1">-</button>
+                        <span style="font-weight:bold; min-width:20px; text-align:center;">${
+                            item.qty
+                        }</span>
+                        <button class="qty-btn-small qty-mod" data-id="${
+                            item.id
+                        }" data-change="1">+</button>
+                    </div>
+                </div>
+                <div style="text-align:right;">
+                    <div style="font-weight:bold;">${
+                        item.price * item.qty
+                    } kr</div>
+                    <button class="btn-link-red qty-mod" data-id="${
+                        item.id
+                    }" data-change="-${item.qty}">Ta bort</button>
+                </div>
+            </div>`
+                        )
+                        .join("");
+
+                    modalBody.innerHTML = `
+            <div id="cart-view">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px; border-bottom: 2px solid #000; padding-bottom: 10px;">
+                    <h2 style="margin:0;">Varukorg</h2>
+                    <button id="clear-cart-btn" class="btn-link-red">RENSA ALLT</button>
+                </div>
+                <div>${itemsHtml}</div>
+                <div class="summary">
+                    <div class="summary-row"><span>Delsumma</span><span>${totalSum} kr</span></div>
+                    <div class="summary-row"><span>Frakt</span><span>150 kr</span></div>
+                    <div class="summary-row" style="font-weight:bold; font-size:1.2em; border-top:1px solid #ddd; padding-top:15px; margin-top:10px;">
+                        <span>Total att betala</span><span>${
+                            totalSum + 150
+                        } kr</span>
+                    </div>
+                    <button class="checkout-btn">GÅ TILL KASSAN</button>
+                    <button class="continue-btn close-modal-trigger">FORTSÄTT HANDLA</button>
+                </div>
+            </div>`;
+                }
+                document.getElementById("app-modal").classList.remove("hidden");
+                lucide.createIcons();
+            }
+
+            /**
+             * INITIALISERING
+             */
+            document.addEventListener("DOMContentLoaded", () => {
+                renderStore();
+
+                // Huvudlyssnare
+                document
+                    .getElementById("menu-toggle")
+                    .addEventListener("click", () => {
+                        document
+                            .getElementById("nav-menu")
+                            .classList.toggle("open");
+                    });
+
+                document
+                    .getElementById("cart-btn")
+                    .addEventListener("click", showCart);
+                document
+                    .getElementById("close-modal")
+                    .addEventListener("click", () => {
+                        document
+                            .getElementById("app-modal")
+                            .classList.add("hidden");
+                    });
+
+                // Event Delegation - Grid
+                document
+                    .getElementById("product-grid")
+                    .addEventListener("click", e => {
+                        const btn = e.target.closest(".qty-change");
+                        const card = e.target.closest(".product-card");
+
+                        if (btn) {
+                            e.stopPropagation();
+                            updateCart(
+                                parseInt(btn.dataset.id),
+                                parseInt(btn.dataset.change)
+                            );
+                        } else if (card) {
+                            showDetail(parseInt(card.dataset.id));
+                        }
+                    });
+
+                // Event Delegation - Modal
+                document
+                    .getElementById("modal-body")
+                    .addEventListener("click", e => {
+                        // Stäng modal via knappar
+                        if (e.target.closest(".close-modal-trigger")) {
+                            document
+                                .getElementById("app-modal")
+                                .classList.add("hidden");
+                            return;
+                        }
+
+                        // Rensa varukorg
+                        if (e.target.id === "clear-cart-btn") {
+                            if (confirm("Vill du rensa hela varukorgen?")) {
+                                cart = [];
+                                showCart();
+                                renderStore();
+                            }
+                            return;
+                        }
+
+                        // Mängdändringar
+                        const btn = e.target.closest(".qty-mod");
+                        if (btn) {
+                            updateCart(
+                                parseInt(btn.dataset.id),
+                                parseInt(btn.dataset.change)
+                            );
+                            if (document.getElementById("cart-view"))
+                                showCart();
+                        }
+                    });
+            });
+        </script>
+    </body>
 </html>
