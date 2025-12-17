@@ -1,0 +1,53 @@
+Här är en genomgång av er nya VG-version i logisk ordning. Den största skillnaden nu är att vi inte bara har "kodrader", utan vi har byggt ett system med hjälp av objektorientering (OOP).
+
+När ni presenterar detta kan ni följa denna struktur:
+
+1. Arkitekturen: De tre pelarna (OOP)
+Istället för att bara ha en lång lista med funktioner, är sidan nu uppdelad i tre tydliga klasser. Tänk på det som rollfördelning i ett företag:
+
+class Product (Modellen): Detta är ritningen för varje möbel. Varje gång vi skapar en ny möbel, använder vi denna klass. Den vet själv hur den ska "rita ut" sig själv i HTML-griddet.
+
+class ShoppingCart (Logiken): Denna klass är som en bokhållare. Den håller koll på listan med valda varor, räknar ut totalsumman och lägger till frakt. Den bryr sig inte om hur sidan ser ut, bara om siffrorna.
+
+class App (Dirigenten): Detta är motorn som kopplar ihop allt. Den lyssnar på klick, pratar med varukorgen och säger åt webbläsaren att uppdatera vyn.
+
+2. Flödet: Från Data till Design
+Här förklarar ni hur informationen rör sig genom koden:
+
+Instansiering: Vi börjar med en lista av vanlig data (furnitureData). JavaScript förvandlar sedan varje sådan rad till ett riktigt objekt genom new Product(p).
+
+Rendering: App-klassen går igenom alla möbel-objekt och ber dem köra sin render()-metod. Det är så de 8 produkterna hamnar snyggt i griddet.
+
+Event Handling: Vi använder en smart teknik som heter Event Delegation. Istället för att sätta en lyssnare på varje knapp, lyssnar vi på hela "griddet". Om vi klickar på en knapp, kollar vi: "Var det ett ID kopplat till denna?". Om ja, uppdateras varukorgen.
+
+3. Designen: CSS & Flexibilitet
+Här förklarar ni hur ni får sidan att se professionell ut:
+
+Responsivitet (Mobilvänlighet): Vi använder @media-queries. Om skärmen är mindre än 768px flyttas loggan till mitten och menyn döljs i en hamburgarmeny för att spara plats.
+
+Sticky Header: Genom position: sticky ser vi till att menyn och varukorgen alltid finns högst upp, även om man scrollar ner till sista produkten.
+
+Grid-systemet: Genom grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)) sköter webbläsaren automatiskt hur många möbler som får plats i bredd. Det är detta som gör att det ser bra ut på både iPad och dator.
+
+4. Interaktionen: Modalen (Popupen)
+Varukorgen och produktvisningen använder samma modal-system:
+
+När du klickar på en möbel (men inte på plusknappen), anropas showProduct(id).
+
+Koden letar rätt på rätt objekt, skriver ny HTML inuti popup-rutan och tar bort klassen .hidden.
+
+Detta gör att sidan känns snabb ("Single Page Application"-känsla) eftersom vi aldrig behöver ladda om hela webbplatsen.
+
+5. Avslutningen: Footern & Copyright
+Längst ner har vi vår <footer>.
+
+Den ger sidan en tydlig botten (visuellt stopp).
+
+Den innehåller er copyright-information: Adli, Anmar & Bleart. Det visar att ni tar ägandeskap över projektet.
+
+Sammanfattning för VG-bedömning
+Om läraren frågar: "Varför är detta bättre än er förra version?", så svarar ni:
+
+"Den förra versionen var procedurell – den körde bara funktioner uppifrån och ner. Denna version är Objektorienterad. Genom att kapsla in (encapsulate) logiken i klasser gör vi koden mer organiserad, lättare att testa och enklare att skala upp om butiken skulle växa till 1000 produkter."
+
+Skulle du vilja att jag förklarar någon av de tekniska termerna, som till exempel constructor eller this, lite mer ingående så att ni känner er trygga med dem?

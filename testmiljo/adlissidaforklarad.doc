@@ -1,0 +1,44 @@
+Slide 1: Introduktion – "Butikens Ansikte"
+Rubrik: En modern E-handel för möbler Bild: (Se den genererade bilden nedan som visar hela sidans layout) Talpunkter:
+
+Vårt mål var att skapa en minimalistisk och användarvänlig möbelbutik.
+
+Vi använder en Clean Design-filosofi där produkterna står i centrum.
+
+Teknikstack: Vi har byggt allt i ren HTML, CSS och JavaScript för att visa på förståelse för grunderna i webbutveckling.
+
+Slide 2: HTML – "Byggnadens Stomme"
+Rubrik: HTML & Struktur Bild: (En bild som visar koden för produkterna eller varukorgen) Talpunkter:
+
+Semantiska taggar: Vi använder <header>, <main> och <footer> för att göra sidan sökbar och tillgänglig.
+
+Injektions-behållare: Vi skapar tomma behållare (t.ex. #product-grid) som JavaScript senare fyller med innehåll. Detta kallas för dynamisk rendering.
+
+Externa källor (CDN): Vi hämtar våra ikoner från Lucide. Det sparar plats och ger en professionell look utan att vi behöver ladda upp hundratals bildfiler.
+
+Slide 3: CSS – "Design & Responsivitet"
+Rubrik: CSS Layout & Användarupplevelse Bild: (En bild som visar skillnaden mellan mobil- och datorvy) Talpunkter:
+
+CSS Grid: Vi använder Grid för produktlistan. Det gör att sidan automatiskt anpassar antalet kolumner beroende på skärmens storlek.
+
+Flexbox: Används för att finjustera placeringen av text och pris inuti varukorgen.
+
+Mobile First: Genom @media-queries har vi skapat en hamburgarmeny som gör att sidan fungerar lika bra på en iPhone som på en stor datorskärm.
+
+Slide 4: JavaScript – "Butikens Logik"
+Rubrik: Dynamisk hantering med JavaScript Bild: (En bild som visar hur varukorgen uppdateras) Talpunkter:
+
+Data-driven: Produkterna lagras i ett objekt-array. Det är enkelt att lägga till nya produkter genom att bara skriva en ny rad i listan.
+
+Händelsestyrning: Vi använder "Event Listeners" som står och vaktar på klick. När du trycker på "Plus" räknar koden ut det nya priset direkt.
+
+State Management: Varukorgen (vår cart-lista) håller reda på exakt vad användaren har valt under sessionen.
+
+Slide 5: Varukorg & Footer – "Avslut & Förtroende"
+Rubrik: Användarinteraktion & Branding Bild: (En närbild på er footer med namnen Adli, Anmar & Bleart) Talpunkter:
+
+Modal-fönster: Vi använder en popup-lösning (Modal) för varukorgen för att hålla användaren kvar på samma sida och minska laddningstider.
+
+Summering: Koden räknar automatiskt ut delsumma, frakt och totalpris i realtid.
+
+Branding: Footern förtydligar att det är ett projekt av oss: Adli, Anmar & Bleart, vilket ger sidan en officiell avslutning.
