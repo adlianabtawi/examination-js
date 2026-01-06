@@ -1,117 +1,168 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
 
-    <!-- Lucide Icons: bibliotek som gör om <i data-lucide="..."> till SVG-ikoner -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-</head>
-<body>
-            <!-- ============================================================
-             HEADER: innehåller hamburgermeny, navigation, logga och varukorg
-             ============================================================ -->
-    <header>
-        <div class="container">
+<html lang="sv">
+    <!-- 
+    lang="sv" anger att innehållet primärt är på svenska
+    (påverkar t.ex. skärmläsare och sökmotorer).
+-->
+    <head>
+        <!-- Anger teckenkodning som UTF-8 (stöd för å, ä, ö m.m.) -->
+        <meta charset="UTF-8" />
 
-            <div class="header-content">
+        <!-- Gör sidan responsiv.
+        width=device-width = sidans bredd följer enhetens bredd
+        initial-scale=1.0 = ingen inzoomning vid start-->
 
-                <!-- Hamburgermeny-knapp (syns bara på mobil via CSS) -->
-                <button id="menu-toggle" class="menu-toggle">
-                    
-                    <!-- Lucide ikon: "menu" -->
-                    <i data-lucide="menu"></i>
-                </button>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+        <!-- Titel som visas i webbläsarens flik -->
+        <title>ABA Furniture</title>
 
-                <!-- Navigationsmeny som öppnas/stängs på mobil -->
-                <nav id="nav-menu" class="nav-menu">
-                    <button class="nav-link">Butik</button>
-                    <button class="nav-link">Om Oss</button>
-                    <button class="nav-link">Kontakt</button>
-                </nav>
+        <!-- Länkar in extern CSS-fil för all styling -->
+        <link rel="stylesheet" href="style.css" />
 
+        <!-- Lucide Icons:
+        Ett externt ikonbibliotek som omvandlar
+        <i data-lucide="icon-name"></i>
+        till SVG-ikoner via JavaScript.-->
+        <script src="https://unpkg.com/lucide@latest"></script>
+    </head>
 
-                <!-- Logo: klick leder till startsidan -->
-                <a href="index.html" class="logo-link">
-                    <img 
-                        src="logo.png" 
-                        alt="Möbler Logotyp"
-                        class="logo-img"
-                    />
-                </a>
+    <body>
+        <!-- ============================================================
+         HEADER: innehåller hamburgermeny, navigation, logga och varukorg
+         ============================================================ -->
+        <header>
+            <!-- Container används för att centrera innehållet och sätta maxbredd -->
+            <div class="container">
+                <!-- Wrapper för allt innehåll i headern -->
+                <div class="header-content">
+                    <!-- 
+                    Hamburgermeny-knapp.
+                    Används på mobil för att visa/dölja navigationsmenyn.
+                    Synlighet styrs via CSS (media queries).
+                -->
+                    <button id="menu-toggle" class="menu-toggle">
+                        <!-- 
+                        Lucide-ikon.
+                        "menu" renderas som tre horisontella streck (hamburgermeny).
+                    -->
+                        <i data-lucide="menu"></i>
+                    </button>
 
+                    <!-- 
+                    Navigationsmeny.
+                    Innehåller länkar till olika sektioner.
+                    På mobil visas/döljs denna via JavaScript.
+                -->
+                    <nav id="nav-menu" class="nav-menu">
+                        <button class="nav-link">Butik</button>
+                        <button class="nav-link">Om Oss</button>
+                        <button class="nav-link">Kontakt</button>
+                    </nav>
 
-                <!-- Varukorgsknapp: öppnar modal med varukorg -->
-                <button id="cart-btn" class="cart-icon">
-                    <i data-lucide="shopping-cart"></i>
+                    <!-- 
+                    Logotyp.
+                    Klick på loggan leder tillbaka till startsidan (index.html).
+                -->
+                    <a href="index.html" class="logo-link">
+                        <img
+                            src="logo.png"
+                            alt="Möbler Logotyp"
+                            class="logo-img"
+                        />
+                    </a>
 
-                    <!-- Badge visar antal varor i varukorgen -->
-                    <span id="cart-badge" class="cart-badge">0</span>
-                </button>
+                    <!-- 
+                    Varukorgsknapp.
+                    När användaren klickar öppnas en modal med varukorgens innehåll.
+                -->
+                    <button id="cart-btn" class="cart-icon">
+                        <!-- Lucide-ikon för varukorg -->
+                        <i data-lucide="shopping-cart"></i>
+
+                        <!-- 
+                        Badge som visar antal produkter i varukorgen.
+                        Uppdateras dynamiskt via JavaScript.
+                    -->
+                        <span id="cart-badge" class="cart-badge">0</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- ============================================================
+         MAIN: hero + produktgrid som fylls dynamiskt med JavaScript
+         ============================================================ -->
+        <main class="container">
+            <!-- 
+            Hero-sektion.
+            Innehåller sidans huvudrubrik och en kort introduktion.
+        -->
+            <div class="hero">
+                <h1>Vår Kollektion</h1>
+                <p>Designmöbler för det moderna hemmet</p>
             </div>
 
+            <!-- 
+            Produkt-grid.
+            Denna div är tom i HTML.
+            JavaScript skapar och renderar produktkort här dynamiskt.
+        -->
+            <div id="product-grid" class="product-grid"></div>
+        </main>
+
+        <!-- ============================================================
+         FOOTER: sidans nederdel med information
+         ============================================================ -->
+        <footer>
+            <div class="container">
+                <!-- Företagsnamn / varumärke -->
+                <p><strong>MÖBLER</strong></p>
+
+                <!-- 
+                Copyright-text.
+                &copy; används för copyright-symbolen ©.
+            -->
+                <p id="copy-right">
+                    &copy; 2025 Adli, Anmar & Bleart. Alla rättigheter
+                    förbehållna.
+                </p>
+            </div>
+        </footer>
+
+        <!-- ============================================================
+         MODAL: används för produktdetaljer och varukorg
+         Klassen "hidden" gör modalen osynlig initialt
+         ============================================================ -->
+        <div id="app-modal" class="modal hidden">
+            <!-- Innehållet i modalen -->
+            <div class="modal-content">
+                <!-- 
+                Stäng-knapp för modalen.
+                JavaScript lyssnar på klick för att dölja modalen.
+            -->
+                <button id="close-modal" class="modal-close">
+                    <i data-lucide="x"></i>
+                </button>
+
+                <!-- 
+                Modalens innehållsområde.
+                Fylls dynamiskt via JavaScript
+                (produktdetaljer eller varukorg).
+            -->
+                <div id="modal-body"></div>
+            </div>
         </div>
-    </header>
 
-
-
-             <!-- ============================================================
-             MAIN: hero + product grid som fylls med produkter via JS
-             ============================================================ -->
-    <main class="container">
-
-        <!-- Hero-sektion: rubrik och introtext -->
-        <div class="hero">
-            <h1>Vår Kollektion</h1>
-            <p>Designmöbler för det moderna hemmet</p>
-        </div>
-
-
-        <!-- Här renderar JS produktkorten -->
-        <div id="product-grid" class="product-grid"></div>
-    </main>
-
-
-            <!-- ============================================================
-             FOOTER: info längst ner på sidan
-             ============================================================ -->
-    <footer>
-        <div class="container">
-
-            <p><strong>MÖBLER</strong></p>
-
-
-            
-            <p id="copy-right">
-                &copy; 2025 Adli, Anmar & Bleart. Alla rättigheter
-                förbehållna.
-            </p>
-        </div>
-    </footer>
-
-
-            <!-- ============================================================
-             MODAL: används för produktdetaljer och varukorg
-             hidden = inte synlig
-             ============================================================ -->
-    <div id="app-modal" class="modal hidden">
-        
-        <div class="modal-content">
-
-            <!-- Stäng modal-knapp -->
-            <button id="close-modal" class="modal-close">
-                <i data-lucide="x"></i>
-            </button>
-
-            <!-- Här renderar JS innehåll (varukorg/detaljvy) -->
-            <div id="modal-body"></div>
-        </div>
-    </div>
-
-
-    <script src="app.js"></script>
-</body>
+        <!-- 
+        Extern JavaScript-fil.
+        Innehåller all logik för:
+        - produkter
+        - varukorg
+        - modaler
+        - interaktioner
+    -->
+        <script src="app.js"></script>
+    </body>
 </html>
