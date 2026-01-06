@@ -1,0 +1,420 @@
+/* ============================================================
+               GRUNDLÄGGANDE DESIGN / RESET
+               Tar bort standardmarginaler och gör box-modellen konsekvent.
+               ============================================================ */
+            * {
+                margin: 0; /* Tar bort standard-marginaler */
+                padding: 0; /* Tar bort standard-padding */
+                box-sizing: border-box; /* Padding/border räknas in i elementets bredd/höjd */
+            }
+
+            /* Grundläggande body-styling */
+            body {
+                /* Systemfont för ett “native”-utseende */
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                    Roboto, sans-serif;
+
+                line-height: 1.6; /* Bekväm radavstånd för text */
+                color: #333; /* Standard textfärg */
+
+                /* Gör layouten till en “kolumn” som kan ha sticky header + footer */
+                display: flex;
+                flex-direction: column;
+
+                /* Ser till att sidan fyller hela höjden av skärmen */
+                min-height: 100vh;
+            }
+
+            /* Begränsar innehållet i bredd och centrerar det */
+            .container {
+                max-width: 1200px; /* Maxbredd på sidan */
+                margin: 0 auto; /* Centrerar containern */
+                padding: 0 20px; /* Luft på sidorna */
+                width: 100%;
+            }
+
+            /* main får ta upp allt “mellanrum” så footern hamnar längst ner */
+            main {
+                flex: 1;
+            }
+
+            /* ============================================================
+               HEADER
+               Sticky header gör att den ligger kvar när man scrollar.
+               ============================================================ */
+            header {
+                background: white;
+                border-bottom: 1px solid #e5e5e5;
+
+                /* Sticky = stannar kvar i toppen vid scroll */
+                position: sticky;
+                top: 0;
+
+                /* z-index gör att headern hamnar ovanpå andra element vid överlapp */
+                z-index: 100;
+            }
+
+            /* Innehållet i headern */
+            .header-content {
+                display: flex;
+                align-items: center;
+                height: 100px;
+
+                /* relative gör att absolut-positionerade element kan placeras inuti */
+                position: relative;
+            }
+
+            /* Logolänken centreras med absolute + transform */
+            .logo-link {
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+                display: flex;
+                align-items: center;
+                text-decoration: none;
+            }
+
+            /* Logobildens storlek */
+            .logo-img {
+                height: 100px;
+                width: auto;
+                object-fit: contain;
+            }
+
+            /* Navigationsmenyn (desktop) */
+            .nav-menu {
+                display: flex;
+                gap: 20px;
+            }
+
+            /* Menyknapparna (Butik/Om oss/Kontakt) */
+            .nav-menu button {
+                background: none;
+                border: none;
+                cursor: pointer;
+                font-size: 15px;
+                color: #666;
+            }
+
+            /* Hamburgermenyn (visas bara på mobil via media query) */
+            .menu-toggle {
+                display: none; /* Dölj på desktop */
+                background: none;
+                border: none;
+                cursor: pointer;
+                margin-right: 15px;
+            }
+
+            /* Varukorgsknappen (till höger) */
+            .cart-icon {
+                position: relative; /* Behövs för badge-position */
+                cursor: pointer;
+                background: none;
+                border: none;
+
+                /* margin-left: auto skjuter varukorgen längst till höger i flex */
+                margin-left: auto;
+
+                display: flex;
+                align-items: center;
+            }
+
+            /* Badgen med antal produkter i varukorgen */
+            .cart-badge {
+                position: absolute;
+                top: -8px;
+                right: -8px;
+                background: black;
+                color: white;
+                border-radius: 50%;
+                width: 18px;
+                height: 18px;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                font-size: 11px;
+            }
+
+            /* ============================================================
+               PRODUKTGRID / HERO
+               ============================================================ */
+            .hero {
+                background: #f9f9f9;
+                padding: 40px 0;
+                text-align: center;
+                margin-bottom: 30px;
+            }
+
+            /* Grid-layout som auto-fyller kolumner beroende på skärmstorlek */
+            .product-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 30px;
+                margin-bottom: 50px;
+            }
+
+            /* Varje produktkort */
+            .product-card {
+                cursor: pointer;
+                transition: transform 0.2s;
+                border-radius: 4px;
+                overflow: hidden;
+            }
+
+            /* Hover-effekt: lyfter kortet lite */
+            .product-card:hover {
+                transform: translateY(-5px);
+            }
+
+            /* Bildens container (fyrkantig via aspect-ratio) */
+            .product-image {
+                width: 100%;
+                aspect-ratio: 1;
+                background: #f5f5f5;
+                position: relative; /* För att placera kontrollerna absolut */
+            }
+
+            /* Bilden fyller hela ytan */
+            .product-image img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            /* Kontrollerna (plus/minus och qty) som ligger ovanpå bilden */
+            .product-controls {
+                position: absolute;
+                bottom: 10px;
+                right: 10px;
+                display: flex;
+                align-items: center;
+
+                background: white;
+                border-radius: 20px;
+                padding: 4px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+                /* Högre z-index så den ligger ovanpå bilden */
+                z-index: 10;
+            }
+
+            /* Knapp för plus/minus */
+            .action-btn {
+                background: white;
+                border: none;
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+            }
+
+            /* ============================================================
+               MODAL & VARUKORG
+               Modal = “popup” med mörk bakgrund.
+               ============================================================ */
+            .modal {
+                position: fixed; /* Ligger fast över hela sidan */
+                inset: 0; /* = top:0 right:0 bottom:0 left:0 */
+                background: rgba(0, 0, 0, 0.5);
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                /* Hög z-index så modalen hamnar över allt */
+                z-index: 1000;
+                padding: 20px;
+            }
+
+            /* När .hidden finns ska modalen inte synas */
+            .modal.hidden {
+                display: none;
+            }
+
+            /* Innehållet i modalen (vit ruta) */
+            .modal-content {
+                background: white;
+                width: 100%;
+                max-width: 700px;
+
+                /* Maxhöjd så den inte blir för stor, scrollar istället */
+                max-height: 85vh;
+                overflow-y: auto;
+
+                position: relative;
+                padding: 40px;
+                border-radius: 8px;
+            }
+
+            /* Stäng-knappen (X) i modalen */
+            .modal-close {
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                background: none;
+                border: none;
+                cursor: pointer;
+            }
+
+            /* Varje rad i varukorgen */
+            .cart-item {
+                display: flex;
+                gap: 15px;
+                padding: 20px 0;
+                border-bottom: 1px solid #eee;
+                align-items: center;
+            }
+
+            /* Produktbilden i varukorgen */
+            .cart-item img {
+                width: 80px;
+                height: 80px;
+                object-fit: cover;
+                border-radius: 4px;
+            }
+
+            /* Info-delen i varukorgen tar upp resterande plats */
+            .cart-item-info {
+                flex: 1;
+            }
+
+            /* Små +/- knappar i varukorgen */
+            .qty-btn-small {
+                width: 28px;
+                height: 28px;
+                border: 1px solid #ddd;
+                background: white;
+                cursor: pointer;
+                border-radius: 4px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            /* Sammanfattningsruta (delsumma/frakt/total) */
+            .summary {
+                background: #f9f9f9;
+                padding: 25px;
+                margin-top: 25px;
+                border-radius: 4px;
+            }
+
+            /* Varje rad i sammanfattningen */
+            .summary-row {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 10px;
+            }
+
+            /* ============================================================
+               KNAPPAR
+               ============================================================ */
+            .checkout-btn {
+                background: black;
+                color: white;
+                border: 1px solid black;
+                width: 100%;
+                padding: 16px;
+                margin-top: 15px;
+                cursor: pointer;
+                font-weight: bold;
+                border-radius: 4px;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+
+            .continue-btn {
+                background: white;
+                color: black;
+                border: 1px solid black;
+                width: 100%;
+                padding: 16px;
+                margin-top: 10px;
+                cursor: pointer;
+                font-weight: bold;
+                border-radius: 4px;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+
+            .continue-btn:hover {
+                background: #f8f8f8;
+            }
+
+            /* Länk-liknande knapp (röd, t.ex. “Ta bort”/“Rensa allt”) */
+            .btn-link-red {
+                background: none;
+                border: none;
+                color: #dc2626;
+                cursor: pointer;
+                text-decoration: underline;
+                font-size: 13px;
+            }
+
+            /* Footer-styling */
+            footer {
+                border-top: 1px solid #e5e5e5;
+                padding: 40px 0;
+                margin-top: 60px;
+                text-align: center;
+            }
+
+            #copy-right {
+            color: #888;
+            font-size: 14px;
+            margin-top: 10px
+            }
+
+            /* ============================================================
+               MOBILANPASSNING (max 768px)
+               ============================================================ */
+            @media (max-width: 768px) {
+                /* Header blir lägre på mobil */
+                .header-content {
+                    height: 80px;
+                }
+
+                /* Visa hamburgermenyn på mobil */
+                .menu-toggle {
+                    display: block;
+                }
+
+                /* Dölj vanliga menyn, visa den bara när .open togglas via JS */
+                .nav-menu {
+                    display: none;
+                    flex-direction: column;
+                    position: absolute;
+                    top: 80px;
+                    left: 0;
+                    width: 100%;
+                    background: white;
+                    padding: 20px;
+                    border-bottom: 1px solid #e5e5e5;
+                    gap: 15px;
+                }
+
+                /* När menyn är “open” visas den */
+                .nav-menu.open {
+                    display: flex;
+                }
+
+                /* På mobil flyttas logon tillbaka in i layouten */
+                .logo-link {
+                    position: static;
+                    transform: none;
+                    margin: 0 auto;
+                }
+
+                /* Mindre logo på mobil */
+                .logo-img {
+                    height: 50px;
+                }
+            }
+
+
+      
