@@ -413,6 +413,7 @@
                 /* Mindre logo på mobil */
                 .logo-img {
                     height: 50px;
+                    margin-left: 50px;
                 }
             }
 
